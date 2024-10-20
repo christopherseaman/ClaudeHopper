@@ -116,7 +116,6 @@ Key points to consider:
 - Display the JSON of API requests when they are made
 - Track and display individual API request costs
 
-
 --- END OF MVP ---
 
 ## Milestone 2 Requirements

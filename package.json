@@ -1,0 +1,41 @@
+{
+  "name": "claudehopper",
+  "version": "1.0.0",
+  "description": "An Electron-based menu bar app for macOS leveraging Claude's API",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "electron dist/main.js",
+    "build": "tsc && cp index.html dist/ && cp -R assets dist/",
+    "watch": "tsc -w",
+    "lint": "eslint -c .eslintrc --ext .ts ./src",
+    "dev": "npm run build && electron dist/main.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "keywords": [
+    "electron",
+    "menubar",
+    "claude",
+    "ai"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/electron": "^1.4.38",
+    "@types/node": "^22.7.7",
+    "electron": "^22.3.27",
+    "electron-builder": "^25.1.8",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.29.2",
+    "axios": "^1.7.7",
+    "menubar": "^9.5.1"
+  },
+  "build": {
+    "appId": "com.yourdomain.claudehopper",
+    "mac": {
+      "category": "public.app-category.productivity"
+    }
+  }
+}

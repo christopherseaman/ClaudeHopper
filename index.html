@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;" />
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;" />
+    <title>ClaudeHopper</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&family=Fira+Mono&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'EB Garamond', serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+      .container {
+        background-color: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+      h1 {
+        font-family: 'Source Sans 3', sans-serif;
+        color: #333;
+        margin-top: 0;
+      }
+      #chatContainer {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .message {
+        margin-bottom: 10px;
+        padding: 8px 12px;
+        border-radius: 18px;
+        max-width: 70%;
+      }
+      .user-message {
+        font-family: 'Source Sans 3', sans-serif;
+        background-color: #007bff;
+        color: white;
+        align-self: flex-end;
+      }
+      .assistant-message {
+        font-family: 'EB Garamond', serif;
+        background-color: #f1f0f0;
+        color: black;
+        align-self: flex-start;
+      }
+      .tasks {
+        background-color: #e9ecef;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+      .tasks h3 {
+        margin-top: 0;
+        font-family: 'Source Sans 3', sans-serif;
+      }
+      .tasks ul {
+        padding-left: 20px;
+      }
+      .task-progress {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
+      .task-progress .status {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+      .task-progress .status.pending {
+        background-color: #ffc107;
+      }
+      .task-progress .status.in-progress {
+        background-color: #17a2b8;
+      }
+      .task-progress .status.completed {
+        background-color: #28a745;
+      }
+      .task-progress .status.error {
+        background-color: #dc3545;
+      }
+      #messageInput, #apiKeyInput {
+        font-family: 'Source Sans 3', sans-serif;
+        width: calc(100% - 70px);
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      #sendButton, #saveApiKeyButton, #showContextButton, #clearContextButton, #saveConversationButton, #loadConversationButton, #openSettingsButton, #closeSettingsButton, #saveSettingsButton {
+        font-family: 'Source Sans 3', sans-serif;
+        padding: 10px;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #sendButton {
+        width: 60px;
+        background-color: #007bff;
+      }
+      #apiKeyInput {
+        width: calc(100% - 130px);
+      }
+      #saveApiKeyButton {
+        width: 120px;
+        background-color: #28a745;
+      }
+      #showContextButton, #clearContextButton, #saveConversationButton, #loadConversationButton {
+        margin-top: 10px;
+        width: 48%;
+      }
+      #showContextButton {
+        background-color: #17a2b8;
+        margin-right: 4%;
+      }
+      #clearContextButton {
+        background-color: #dc3545;
+      }
+      #saveConversationButton {
+        background-color: #28a745;
+      }
+      #loadConversationButton {
+        background-color: #17a2b8;
+      }
+      #openSettingsButton {
+        margin-top: 10px;
+        width: 120px;
+        background-color: #6c757d;
+      }
+      #closeSettingsButton, #saveSettingsButton {
+        font-family: 'Source Sans 3', sans-serif;
+        padding: 10px;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #closeSettingsButton {
+        background-color: #dc3545;
+        margin-right: 10px;
+      }
+      #saveSettingsButton {
+        background-color: #28a745;
+      }
+      code {
+        font-family: 'Fira Mono', monospace;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+      }
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 8px;
+      }
+      .close, .close-settings {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .close:hover, .close:focus, .close-settings:hover, .close-settings:focus {
+        color: black;
+        text-decoration: none;
+      }
+      .settings-form {
+        display: flex;
+        flex-direction: column;
+      }
+      .settings-form label {
+        margin-top: 10px;
+        margin-bottom: 5px;
+        font-family: 'Source Sans 3', sans-serif;
+      }
+      .settings-form input, .settings-form select {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>ClaudeHopper</h1>
+      <div id="chatContainer"></div>
+      <div style="display: flex; margin-bottom: 10px;">
+        <input type="text" id="messageInput" placeholder="Type your message..." />
+        <button id="sendButton">Send</button>
+      </div>
+      <div style="display: flex; margin-bottom: 10px;">
+        <input type="password" id="apiKeyInput" placeholder="Enter your API key" />
+        <button id="saveApiKeyButton">Save API Key</button>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <button id="showContextButton">Show Context</button>
+        <button id="clearContextButton">Clear Context</button>
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+        <button id="saveConversationButton">Save Conversation</button>
+        <button id="loadConversationButton">Load Conversation</button>
+      </div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+        <button id="openSettingsButton">Settings</button>
+      </div>
+      <p>
+        We are using Node.js <code id="node-version"></code>, Chromium
+        <code id="chrome-version"></code>, and Electron
+        <code id="electron-version"></code>.
+      </p>
+    </div>
+
+    <!-- Context Modal -->
+    <div id="contextModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Current Context</h2>
+        <pre id="contextContent"></pre>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close-settings">&times;</span>
+        <h2>Settings</h2>
+        <form class="settings-form">
+          <label for="modelSelect">Select Model:</label>
+          <select id="modelSelect">
+            <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+            <option value="claude-2">Claude 2</option>
+            <!-- Add more models as needed -->
+          </select>
+
+          <label for="maxTokens">Max Tokens:</label>
+          <input type="number" id="maxTokens" value="1000" min="100" max="4000" />
+
+          <label for="themeSelect">Theme:</label>
+          <select id="themeSelect">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <!-- Add more themes as needed -->
+          </select>
+
+          <button type="button" id="saveSettingsButton" style="margin-top: 20px;">Save Settings</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="dist/renderer.js"></script>
+  </body>
+</html>
