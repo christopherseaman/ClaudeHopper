@@ -1,9 +1,9 @@
 # ClaudeHopper
 
-Please proceed with the development, focusing solely on the MVP requirements for now. Regularly check in with updates, challenges faced, and any design decisions that require input.
+Please proceed with the development, focusing solely on the MVP requirements for now. Regularly check in with updates, challenges faced, and any design decisions that require input. The project this will be based on is available in the /cline subfolder, so search there for existing code references.
 
 ## Project Overview
-Adapt CLINE's functionality into an Electron-based menu bar app for macOS called ClaudeHopper. The app will leverage Claude's API to provide an intelligent assistant capable of breaking down complex problems, managing context, and executing tasks.
+Adapt cline's agentic functionality (using Anthropic's claude-3-5-sonnet model) into an Electron-based menu bar app for macOS called ClaudeHopper. The app will leverage Claude's API to provide an intelligent assistant capable of breaking down complex problems, managing context, and executing tasks.
 
 Key points to consider:
 1. Leverage existing Electron expertise: VS Code, the platform CLINE is currently built for, is itself an Electron app. This shared technological foundation should significantly ease the transition from a VS Code extension to a standalone app.
