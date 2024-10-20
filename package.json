@@ -21,7 +21,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/electron": "^1.4.38",
     "@types/node": "^22.7.7",
     "electron": "^22.3.27",
     "electron-builder": "^25.1.8",
@@ -30,7 +29,9 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.29.2",
     "axios": "^1.7.7",
-    "menubar": "^9.5.1"
+    "menubar": "^9.5.1",
+    "openai": "^4.10.0",
+    "delay": "^5.0.0"
   },
   "build": {
     "appId": "com.yourdomain.claudehopper",

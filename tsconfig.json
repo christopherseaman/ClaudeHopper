@@ -7,11 +7,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": ".",
     "sourceMap": true
   },
   "include": [
     "src/**/*",
+    "cline/src/**/*",
     "src/electron.d.ts"
   ],
   "exclude": [
